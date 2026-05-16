@@ -1,6 +1,6 @@
 import streamlit as st
 import numpy as np
-from keras.utils import load_img, img_to_array
+from tensorflow.keras.utils import load_img, img_to_array
 #to resize image due to adjust
 from PIL import Image
 tumor_image=Image.open('images.jpeg')
