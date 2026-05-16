@@ -1,20 +1,32 @@
 import streamlit as st
-import tensorflow as tf
 import numpy as np
-from tensorflow.keras.preprocessing import image
+from tensorflow.keras.utils import load_img, img_to_array
 #to resize image due to adjust
 from PIL import Image
 tumor_image=Image.open('images.jpeg')
 Home_image=tumor_image.resize((800,250))
-model = tf.keras.models.load_model(
-    'brain_tumor_model.h5'
-)
+@st.cache_resource
+def load_my_model():
+    import os
+    import gdown
+    from tensorflow.keras.models import load_model
+
+    MODEL_PATH = "brain_tumor_model.h5"
+
+    if not os.path.exists(MODEL_PATH):
+        file_id = "1uLd8lWvD8_tlVdZYNQQNi06bMtd4PTFh"
+        url = f"https://drive.google.com/uc?id={file_id}"
+        gdown.download(url, MODEL_PATH, quiet=False)
+
+    return load_model(MODEL_PATH)
+
+model = load_my_model()
 st.markdown("<h1 style='color:red;'>Brain_Tumor_Detection</h1>",unsafe_allow_html=True)
 uploaded_file=st.file_uploader("upload Brain MRI image",type=['jpg','jpeg','png'])
-if(st.button('Press')):
+if(st.button('Predict')):
     if uploaded_file is not None:
-        img=image.load_img(uploaded_file,target_size=(200,200))
-        img_array=image.img_to_array(img)
+        img=load_img(uploaded_file,target_size=(200,200))
+        img_array=img_to_array(img)
         new_img=np.expand_dims(img_array,axis=0)
         scale_img=new_img/255.0
         prediction=model.predict(scale_img)
