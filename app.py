@@ -4,7 +4,7 @@ from tensorflow.keras.utils import load_img, img_to_array
 #to resize image due to adjust
 from PIL import Image
 tumor_image=Image.open('images.jpeg')
-Home_image=tumor_image.resize((800,250))
+Home_image=tumor_image.resize((400,250))
 @st.cache_resource
 def load_my_model():
     import os
@@ -77,8 +77,8 @@ elif option == "About":
     The main goal of this project is to use Artificial Intelligence
     for assisting in brain tumor diagnosis through MRI image classification.
     """)
-    about_img=Image.open('about.png')
-    about_img=about_img.resize((800,280))
+    about_img=Image.open('images.jpeg')
+    about_img=about_img.resize((400,280))
     st.image(
         about_img,
         width=600
